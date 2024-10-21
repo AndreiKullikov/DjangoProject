@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe App</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #4CAF50;
+            color: white;
+        }
+        .nav-links {
+            margin: 15px 0; /* Отступ для навигационных ссылок */
+        }
+        .nav-links a {
+            margin: 0 15px; /* Отступ между ссылками */
+            color: white; /* Цвет ссылок */
+            text-decoration: none; /* Убираем подчеркивание */
+        }
+        .recipe-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .recipe-item {
+            background: white;
+            margin: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex; /* Используем flex для размещения изображения и текста */
+            align-items: center; /* Выравниваем по центру по вертикали */
+        }
+        .recipe-item img {
+            max-width: 100px; /* Устанавливаем максимальную ширину для изображения */
+            height: auto; /* Автоматическая высота для сохранения пропорций */
+            margin-right: 15px; /* Отступ справа от изображения */
+        }
+        .recipe-item h2 {
+            margin: 0;
+        }
+        .recipe-item p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Список Рецептов</h1>
+        <div class="nav-links">
+            <a href="{% url 'register' %}">Регистрация</a>
+            <a href="{% url 'add_recipe' %}">Добавить рецепт</a>
+        </div>
+        <div class="search-container">
+            <form action="{% url 'search_recipes' %}" method="GET">
+                <input type="text" name="query" placeholder="Type A Dish Name Here.." id="user-inp">
+                <button type="submit" id="search-btn">Search</button>
+            </form>
+        </div>
+    </header>
+
+    <main>
+        <div id="result"></div>
+        {% if recipes %}
+            <ul class="recipe-list">
+                {% for recipe in recipes %}
+                    <li class="recipe-item">
+                        {% if recipe.image %}
+                            <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
+                        {% endif %}
+                        <div>
+                            <h2><a href="{% url 'single_recipe' recipe.id %}">{{ recipe.title }}</a></h2>
+                            <p><strong>Описание:</strong> {{ recipe.description }}</p>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Нет доступных рецептов.</p>
+        {% endif %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Andrew</p>
+    </footer>
+
+    <!-- Script -->
+    <script src="script.js"></script>
+</body>
+</html>
+
+

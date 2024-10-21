@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe App</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        .recipe-image {
+            max-width: 300px;  /* Максимальная ширина изображения */
+            height: auto;      /* Автоматическая высота для сохранения пропорций */
+            display: block;    /* Делает изображение блочным элементом */
+            margin: 0 auto;    /* Центрирует изображение по горизонтали */
+        }
+    </style>
+</head>
+<body>
+    <div class="recipe-container">
+        <h1>{{ recipe.title }}</h1>
+
+        <!-- Автор рецепта -->
+        <p><strong>Author:</strong> {{ recipe.author.username }}</p>
+
+        <!-- Дата создания -->
+        <p><strong>Created on:</strong> {{ recipe.created_at|date:"d M Y" }}</p>
+
+        <!-- Изображение рецепта -->
+        {% if recipe.image %}
+            <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="recipe-image">
+        {% else %}
+            <p><em>No image available</em></p>
+        {% endif %}
+
+        <!-- Описание рецепта -->
+        <div class="description">
+            <h2>Description</h2>
+            <p>{{ recipe.description }}</p>
+        </div>
+
+        <!-- Ингредиенты -->
+        <div class="ingredients">
+            <h2>Ingredients</h2>
+            <p>{{ recipe.ingredients }}</p>
+        </div>
+
+        <!-- Шаги приготовления -->
+        <div class="steps">
+            <h2>Steps</h2>
+            <p>{{ recipe.steps|linebreaks }}</p>
+        </div>
+
+        <!-- Время приготовления -->
+        <p><strong>Cooking Time:</strong> {{ recipe.cooking_time }} minutes</p>
+
+        <!-- Категории рецепта -->
+        <div class="categories">
+            <h2>Categories</h2>
+            <ul>
+                {% for category in recipe.categories.all %}
+                    <li>{{ category.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+</body>
+</html>
+
